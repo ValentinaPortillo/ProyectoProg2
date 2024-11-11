@@ -22,6 +22,9 @@ public class Main{
             Enfermedades.TEnfermedad enfermedad = new Enfermedades.TEnfermedad();
             enfermedad.crearTablaEnfermedades();
 
+            EnfermedadesxPersona.TEnfxPer personaEnferma = new EnfermedadesxPersona.TEnfxPer();
+            personaEnferma.crearTablaEnfefxPer();
+
 
         } catch (SQLException e) {
             System.out.println("Error:" + e.getMessage());
