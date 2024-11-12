@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -60,6 +61,27 @@ public class Comida {
             } catch (SQLException e) {
                 System.out.println("Error: " + e.getMessage());
             }
+        }
+
+         // Método para calcular el total de calorías consumidas
+        public int calcularTotalCaloriasConsumidas() {
+            int totalCalorias = 0;
+            String sql = "SELECT SUM(calorias) AS total_calorias FROM Comida";
+
+            try (Connection conn = conexion.Obtenerconexion();
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(sql)) {
+
+                // Si hay un resultado, obtener el total de calorías
+                if (rs.next()) {
+                    totalCalorias = rs.getInt("total_calorias");
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error al calcular el total de calorías: " + e.getMessage());
+            }
+
+            return totalCalorias;
         }
     }
 }

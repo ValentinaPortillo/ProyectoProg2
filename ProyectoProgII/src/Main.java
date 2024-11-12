@@ -74,12 +74,24 @@ public class Main{
                         }
                         break;
                     case 5:
+                      comida.crearObjetoComida(); 
+                      break;
+                    case 6:
                         System.out.println("Seleccionaste 'Calcular calorías consumidas'");
                         // Lógica para calcular calorías consumidas
+                        Comida.TComida tComida = new Comida.TComida();
+
+                        try {
+                            int totalCalorias = tComida.calcularTotalCaloriasConsumidas();
+                            System.out.println("Total de calorías consumidas: " + totalCalorias);
+                        } catch (Exception e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
                         break;
-                    case 6:
-                        System.out.println("Seleccionaste 'Ver enfermedades de persona'");
-                        // Lógica para ver enfermedades
+                    case 7:
+                        System.out.println("Seleccionaste 'Crear Ejercicios'");
+                        System.out.println("=== Registrar Ejercicio Realizado ===");
+                        ejercicio.crearObjeto();
                         break;
                     case 0:
                         System.out.println("Saliendo del programa.");

@@ -9,8 +9,9 @@ public class Menu {
         System.out.println("2. Calcular IMC");
         System.out.println("3. Cargar enfermedades para el usuario");
         System.out.println("4. Ver enfermedades de persona");
-        System.out.println("5. Calcular calorías consumidas");
+        System.out.println("5. Ingresar comida y sus atributos");
         System.out.println("6. Calcular calorías consumidas");
+        System.out.println("7. Ejercicios");
         System.out.println("0. Salir");
 
         while (true) {
@@ -18,7 +19,7 @@ public class Menu {
             try {
                 opcion = Integer.parseInt(scanner.nextLine());
 
-                if (opcion >= 0 && opcion <= 6) {
+                if (opcion >= 0 && opcion <= 7) {
                     break;
                 } else {
                     System.out.println("Por favor, ingrese una opción válida (0-6).");
