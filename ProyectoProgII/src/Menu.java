@@ -7,10 +7,10 @@ public class Menu {
         System.out.println("=== Menú de Opciones ===");
         System.out.println("1. Crear nuevo usuario");
         System.out.println("2. Calcular IMC");
-        System.out.println("3. Cargar comida");
-        System.out.println("4. Calcular calorías quemadas");
+        System.out.println("3. Cargar enfermedades para el usuario");
+        System.out.println("4. Ver enfermedades de persona");
         System.out.println("5. Calcular calorías consumidas");
-        System.out.println("6. Ver enfermedades de persona");
+        System.out.println("6. Calcular calorías consumidas");
         System.out.println("0. Salir");
 
         while (true) {
