@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Scanner;
 
 
 public class Main{
@@ -9,26 +10,74 @@ public class Main{
 
         Connection connection = null;
         try {
+            conexion.borrarTodasLasTablas(); // Borra todas las tablas al inicio para evitar duplicidad de datos al ejecutar varias veces
             connection = conexion.Obtenerconexion();
             System.out.println("Conexion realizada");
 
             //laburen
             Persona.TPersona persona = new Persona.TPersona(); //objeto utilizado para accedeer a los metodos/registros de la clase
-            persona.crearTabla();
-            persona.crearObjeto(); //creo el objeto desde el main
-
             Comida.TComida comida = new Comida.TComida();
-            comida.crearTablaComida(); 
-            comida.crearObjetoComida(); 
-            
-               // Crear tabla e insertar datos en Ejercicio
             Ejercicio.TEjercicio ejercicio = new Ejercicio.TEjercicio();
-            ejercicio.crearTabla();
-            ejercicio.crearObjeto();
-
-             // Crear la tabla Enfermedades y agregar datos
             Enfermedades.TEnfermedad enfermedad = new Enfermedades.TEnfermedad();
-            enfermedad.crearTablaEnfermedades();
+            EnfermedadesxPersona.TEnfxPer personaEnferma = new EnfermedadesxPersona.TEnfxPer();
+
+            //Creo las tablas
+            persona.crearTabla();
+            comida.crearTablaComida();
+            ejercicio.crearTabla();
+            enfermedad.crearTablaEnfermedades(); //Crea la tabla enfermedades y agrega datos estáticos
+            personaEnferma.crearTablaEnfefxPer();
+
+//            persona.crearObjeto(); //creo el objeto desde el main
+//            comida.crearObjetoComida();
+//            ejercicio.crearObjeto();
+
+            Scanner scanner = new Scanner(System.in);
+            int opcionSeleccionada;
+            do {
+                opcionSeleccionada = Menu.mostrarMenu(scanner);
+
+                switch (opcionSeleccionada) {
+                    case 1:
+                        System.out.println("=== Crear un nuevo usuario ===");
+                        persona.crearObjeto(scanner);
+                        break;
+                    case 2:
+                        System.out.println("=== IMC ===");
+                        System.out.println("Ingrese su username: ");
+                        String username = scanner.nextLine();
+                        Persona persona1 = Persona.buscarPorUsername(username);
+                        System.out.println("El IMC de " + username + " es: " + persona1.calcularIMC(persona1.getPeso(), persona1.getAltura()));
+                        break;
+                    case 3:
+                        System.out.println("=== Cargar comida ===");
+
+                        break;
+                    case 4:
+                        System.out.println("Seleccionaste 'Calcular calorías quemadas'");
+                        // Lógica para calcular calorías quemadas
+                        break;
+                    case 5:
+                        System.out.println("Seleccionaste 'Calcular calorías consumidas'");
+                        // Lógica para calcular calorías consumidas
+                        break;
+                    case 6:
+                        System.out.println("Seleccionaste 'Ver enfermedades de persona'");
+                        // Lógica para ver enfermedades
+                        break;
+                    case 0:
+                        System.out.println("Saliendo del programa.");
+                        break;
+                    default:
+                        System.out.println("Opción no válida.");
+                        break;
+                }
+
+                System.out.println();
+            } while (opcionSeleccionada != 0);  // Continuar hasta que el usuario elija salir
+
+
+
     
 
             // persona1.FuncionImc(id1)

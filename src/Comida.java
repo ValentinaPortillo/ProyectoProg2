@@ -19,7 +19,7 @@ public class Comida {
                         + "proteinas FLOAT, "
                         + "carbohidratos FLOAT, "
                         + "grasas FLOAT, "
-                        + "fecha_consumo DATE DEFAULT CURDATE()"
+                        + "fecha_consumo DATE DEFAULT (CURDATE())"
                         + ")";
                         
                 stnt.executeUpdate(createTableSQL);
