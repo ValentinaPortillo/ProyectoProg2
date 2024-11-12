@@ -12,7 +12,7 @@ public class Enfermedades {
                         + "tiene_cura BOOLEAN"
                         + ")";
                 stnt.executeUpdate(createTableSQL);
-                System.out.println("Tabla enfermedades creada correctamente");
+                System.out.println("Tabla 'Enfermedades' creada correctamente");
 
                 String sql = "INSERT INTO Enfermedades (nombre_enfermedad, tiene_cura) VALUES (?, ?)";
                 PreparedStatement pstmt = conn.prepareStatement(sql);
