@@ -145,14 +145,25 @@ public class Main {
 
                     case 6:
                         System.out.println("Seleccionaste 'Ejercicios'");
-                        // boolean ejercicioTrue = true;
-                        // while (ejercicioTrue) {
-                        // System.out.println("=== Menú Ejercicios ===");
-                        // System.out.println("1. Registrar un nuevo ejercicio realizado");
-                        // System.out.println("2. Ver ejercicios registrados por usuario");
-                        // System.out.println("3. Calcular total de calorías quemadas");
-                        // System.out.println("0. Salir del menú de ejercicios");
-                        // System.out.print("Seleccione una opción: ");
+                         boolean ejercicioTrue = true;
+                         while (ejercicioTrue) {
+                             System.out.println("=== Menú Ejercicios ===");
+                             System.out.println("1. Registrar un nuevo ejercicio realizado");
+                             System.out.println("2. Ver ejercicios registrados por usuario");
+                             System.out.println("3. Calcular total de calorías quemadas");
+                             System.out.println("0. Salir del menú de ejercicios");
+                             System.out.print("Seleccione una opción: ");
+
+                             String respuestaEjercicio = scanner.nextLine();
+                             switch (respuestaEjercicio) {
+                                 case "1":
+                                     break;
+                                 case "2":
+                                     break;
+                                 case "0":
+                                     ejercicioTrue = false;
+                             }
+                         }
 
                         // String respuestaEjercicio = scanner.nextLine();
 

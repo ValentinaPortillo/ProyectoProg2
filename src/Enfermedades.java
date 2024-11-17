@@ -31,73 +31,74 @@ public class Enfermedades {
                 stnt.executeUpdate(createTableSQL);
                 System.out.println("Tabla 'Enfermedades' creada correctamente");
 
-                String sql = "INSERT INTO Enfermedades (nombre_enfermedad, tiene_cura) VALUES (?, ?)";
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, "Diabetes");
-                pstmt.setBoolean(2,false);
-                pstmt.executeUpdate();
-
-                sql = "INSERT INTO Enfermedades (nombre_enfermedad, tiene_cura) VALUES (?, ?)";
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, "Covid-19");
-                pstmt.setBoolean(2,true);
-                pstmt.executeUpdate();
-
-                sql = "INSERT INTO Enfermedades (nombre_enfermedad, tiene_cura) VALUES (?, ?)";
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, "EDA");
-                pstmt.setBoolean(2, false);
-                pstmt.executeUpdate();
-
-                sql = "INSERT INTO Enfermedades (nombre_enfermedad, tiene_cura) VALUES (?, ?)";
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, "Denge");
-                pstmt.setBoolean(2,true);
-                pstmt.executeUpdate();
-
-                sql = "INSERT INTO Enfermedades (nombre_enfermedad, tiene_cura) VALUES (?, ?)";
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, "VIH");
-                pstmt.setBoolean(2, false);
-                pstmt.executeUpdate();
-
-                sql = "INSERT INTO Enfermedades (nombre_enfermedad, tiene_cura) VALUES (?, ?)";
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, "SOPQ");
-                pstmt.setBoolean(2, false);
-                pstmt.executeUpdate();
-
-                sql = "INSERT INTO Enfermedades (nombre_enfermedad, tiene_cura) VALUES (?, ?)";
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, "Cancer");
-                pstmt.setBoolean(2,true);
-                pstmt.executeUpdate();
-
-                sql = "INSERT INTO Enfermedades (nombre_enfermedad, tiene_cura) VALUES (?, ?)";
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, "Asma");
-                pstmt.setBoolean(2,false);
-                pstmt.executeUpdate();
-
-                sql = "INSERT INTO Enfermedades (nombre_enfermedad, tiene_cura) VALUES (?, ?)";
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, "Herpes");
-                pstmt.setBoolean(2,false);
-                pstmt.executeUpdate();
-
-                sql = "INSERT INTO Enfermedades (nombre_enfermedad, tiene_cura) VALUES (?, ?)";
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, "Clamidia");
-                pstmt.setBoolean(2, true);
-                pstmt.executeUpdate();
-
-
-                int rowCount = pstmt.executeUpdate();
-                System.out.println("Filas afectadas: " + rowCount);
-                System.out.println("objetos Enferm creado correctamente");
+                InsertarEnfermedades();
 
             } catch (SQLException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("Error en crearTablaEnfermedades: " + e.getMessage());
+            }
+        }
+
+        public void InsertarEnfermedades() throws SQLException {
+            try (Connection conn = conexion.Obtenerconexion()) {
+
+                String checkSql = "SELECT COUNT(*) FROM enfermedades";
+
+                try (PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+                     ResultSet rs = checkStmt.executeQuery()) {
+
+                    if (rs.next() && rs.getInt(1) > 0) {
+                        System.out.println("La tabla 'Enfermedades' ya contiene datos. No se realizaron inserciones.");
+                        return;
+                    }
+                }
+
+                String insertSql = "INSERT INTO Enfermedades (nombre_enfermedad, tiene_cura) VALUES (?, ?)";
+                try (PreparedStatement pstmt = conn.prepareStatement(insertSql)) {
+                    pstmt.setString(1, "Diabetes");
+                    pstmt.setBoolean(2, false);
+                    pstmt.executeUpdate();
+
+                    pstmt.setString(1, "Covid-19");
+                    pstmt.setBoolean(2, true);
+                    pstmt.executeUpdate();
+
+                    pstmt.setString(1, "EDA");
+                    pstmt.setBoolean(2, false);
+                    pstmt.executeUpdate();
+
+                    pstmt.setString(1, "Dengue");
+                    pstmt.setBoolean(2, true);
+                    pstmt.executeUpdate();
+
+                    pstmt.setString(1, "VIH");
+                    pstmt.setBoolean(2, false);
+                    pstmt.executeUpdate();
+
+                    pstmt.setString(1, "SOPQ");
+                    pstmt.setBoolean(2, false);
+                    pstmt.executeUpdate();
+
+                    pstmt.setString(1, "Cancer");
+                    pstmt.setBoolean(2, true);
+                    pstmt.executeUpdate();
+
+                    pstmt.setString(1, "Asma");
+                    pstmt.setBoolean(2, false);
+                    pstmt.executeUpdate();
+
+                    pstmt.setString(1, "Herpes");
+                    pstmt.setBoolean(2, false);
+                    pstmt.executeUpdate();
+
+                    pstmt.setString(1, "Clamidia");
+                    pstmt.setBoolean(2, true);
+                    pstmt.executeUpdate();
+
+                    System.out.println("Inserciones realizadas correctamente.");
+                }
+            } catch (SQLException e) {
+                System.out.println("Error en InsertarEnfermedades: " + e.getMessage());
+                throw e; // Repropaga la excepción si es necesario
             }
         }
     }
@@ -110,19 +111,17 @@ public class Enfermedades {
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
-            // Iterar sobre el ResultSet y crear objetos Enfermedad
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String nombreEnfermedad = rs.getString("nombre_enfermedad");
                 boolean tieneCura = rs.getBoolean("tiene_cura");
 
-                // Crear un objeto Enfermedad y agregarlo a la lista
                 Enfermedades enfermedad = new Enfermedades(id, nombreEnfermedad, tieneCura);
                 listaEnfermedades.add(enfermedad);
             }
 
         } catch (SQLException e) {
-            System.out.println("Error al realizar la consulta: " + e.getMessage());
+            System.out.println("Error en obtenerTodasLasEnfermedades: " + e.getMessage());
         }
 
         return listaEnfermedades;
