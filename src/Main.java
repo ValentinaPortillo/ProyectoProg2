@@ -16,6 +16,7 @@ public class Main {
                                                                // de la clase
             Comida.TComida comida = new Comida.TComida();
             Ejercicio.TEjercicio ejercicio = new Ejercicio.TEjercicio();
+            EjercicioxPersona.TEjercicioxPer ejercicioxpersona = new EjercicioxPersona.TEjercicioxPer();
             Enfermedades.TEnfermedad enfermedad = new Enfermedades.TEnfermedad();
             EnfermedadesxPersona.TEnfxPer personaEnferma = new EnfermedadesxPersona.TEnfxPer();
             ComidaxPersona.TComxPer comidaxPersona = new ComidaxPersona.TComxPer();
@@ -24,6 +25,7 @@ public class Main {
             persona.crearTabla();
             comida.crearTablaComida();
             ejercicio.crearTabla();
+            ejercicioxpersona.crearTablaEjercxPer();
             enfermedad.crearTablaEnfermedades(); // Crea la tabla enfermedades y agrega datos estáticos
             personaEnferma.crearTablaEnfefxPer();
             comidaxPersona.crearTablaComxPer(); // Usa el nombre correcto del método aquí
@@ -157,6 +159,20 @@ public class Main {
                              String respuestaEjercicio = scanner.nextLine();
                              switch (respuestaEjercicio) {
                                  case "1":
+                                     System.out.println("=== Registrar nuevo ejericio realizado ===");
+                                     System.out.println("Ingrese su username: ");
+                                     String username6 = scanner.nextLine();
+                                     Persona persona6 = Persona.buscarPorUsername(username6);
+                                     List<Ejercicio> ejercicios = Ejercicio.obtenerEjercicios();
+                                     for (Ejercicio ejercicio1 : ejercicios) {
+                                         System.out.println(ejercicio1.toString());
+                                     }
+                                     int ejercicio_seleccionado = scanner.nextInt();
+                                     System.out.println("Ingrese la duración del ejericio: ");
+                                     int duracion = scanner.nextInt();
+                                     EjercicioxPersona.insertarEjercicioPersona(ejercicio_seleccionado, persona6.getId(), duracion);
+                                     System.out.println("Ejercicio cargado correctamente\n");
+
                                      break;
                                  case "2":
                                      break;

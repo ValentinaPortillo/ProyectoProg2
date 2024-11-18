@@ -12,11 +12,12 @@ public class EjercicioxPersona {
                  Statement stnt = conn.createStatement()) {
 
                 String createTableSQL = "CREATE TABLE IF NOT EXISTS EjercicioxPersona ("
-                        + "PRIMARY KEY (ejercicio_id, persona_id), "
-                        + "ejercicio_id INT, "
-                        + "persona_id INT, "
-                        + "FOREIGN KEY (ejercicio_id) REFERENCES Ejercicio(id), "
-                        + "FOREIGN KEY (persona_id) REFERENCES Persona(id) "
+                        + "id_ejercicio INT NOT NULL, "
+                        + "persona_id INT NOT NULL, "
+                        + "duracion INT NOT NULL, "
+                        + "PRIMARY KEY (id_ejercicio, persona_id), "
+                        + "FOREIGN KEY (id_ejercicio) REFERENCES Ejercicios(id_ejercicio), "
+                        + "FOREIGN KEY (persona_id) REFERENCES Persona(id)"
                         + ")";
 
                 stnt.executeUpdate(createTableSQL);
@@ -27,29 +28,13 @@ public class EjercicioxPersona {
             }
         }
 
-        // Método para insertar un ejercicio realizado por una persona
-        public void insertarEjercicioPersona(int ejercicioId, int personaId) {
-            String sql = "INSERT INTO EjercicioxPersona (ejercicio_id, persona_id) VALUES (?, ?)";
 
-            try (Connection conn = conexion.Obtenerconexion();
-                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-                pstmt.setInt(1, ejercicioId);
-                pstmt.setInt(2, personaId);
-
-                int rowCount = pstmt.executeUpdate();
-                System.out.println("Filas insertadas: " + rowCount);
-
-            } catch (SQLException e) {
-                System.out.println("Error al insertar en EjercicioxPersona: " + e.getMessage());
-            }
-        }
 
         // Método para obtener los ejercicios realizados por una persona
         public List<Ejercicio> obtenerEjercicioPorPersona(int personaId) {
             List<Ejercicio> ejercicios = new ArrayList<>();
 
-            String sql = "SELECT j.id_ejercicio, j.nombre, j.calorias_quemadas, j.duracion, j.tipo "
+            String sql = "SELECT j.id_ejercicio, j.nombre, j.calorias_quemadas, j.tipo "
                        + "FROM EjercicioxPersona jp "
                        + "JOIN Ejercicio j ON jp.ejercicio_id = j.id_ejercicio "
                        + "WHERE jp.persona_id = ?";
@@ -61,12 +46,12 @@ public class EjercicioxPersona {
                 ResultSet rs = pstmt.executeQuery();
 
                 while (rs.next()) {
+                    int id = rs.getInt("id");
                     String nombre = rs.getString("nombre");
                     int caloriasQuemadas = rs.getInt("calorias_quemadas");
-                    String duracion = rs.getString("duracion");
                     String tipo = rs.getString("tipo");
 
-                    Ejercicio ejercicio = new Ejercicio(nombre, caloriasQuemadas, duracion, tipo);
+                    Ejercicio ejercicio = new Ejercicio(id, nombre, caloriasQuemadas, tipo);
                     ejercicios.add(ejercicio);
                 }
 
@@ -87,6 +72,25 @@ public class EjercicioxPersona {
             }
 
             return totalCalorias;
+        }
+    }
+
+    // Método para insertar un ejercicio realizado por una persona
+    public static void insertarEjercicioPersona(int ejercicioId, int personaId, int duracion) {
+        String sql = "INSERT INTO EjercicioxPersona (id_ejercicio, persona_id, duracion) VALUES (?, ?, ?)";
+
+        try (Connection conn = conexion.Obtenerconexion();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, ejercicioId);
+            pstmt.setInt(2, personaId);
+            pstmt.setInt(3, duracion);
+
+            int rowCount = pstmt.executeUpdate();
+            System.out.println("Filas insertadas: " + rowCount);
+
+        } catch (SQLException e) {
+            System.out.println("Error al insertar en EjercicioxPersona: " + e.getMessage());
         }
     }
 }
