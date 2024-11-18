@@ -8,12 +8,14 @@ public class Ejercicio {
     private String nombre;
     private int caloriasQuemadas;
     private String tipo;
+    private int duracion;
 
-    public Ejercicio(int id, String nombre, int caloriasQuemadas, String tipo) {
+    public Ejercicio(int id, String nombre, int caloriasQuemadas, String tipo, int duracion) {
         this.id = id;
         this.nombre = nombre;
         this.caloriasQuemadas = caloriasQuemadas;
         this.tipo = tipo;
+        this.duracion = duracion;
     }
 
     // Getters para acceder a los atributos de Ejercicio
@@ -28,6 +30,11 @@ public class Ejercicio {
     public String getTipo() {
         return tipo;
     }
+
+    public int getDuracion() {
+        return duracion;
+    }
+
 
     // Clase interna para crear la tabla y manejar la inserción de ejercicios
     public static class TEjercicio {
@@ -54,40 +61,6 @@ public class Ejercicio {
             }
         }
 
-        // Método para insertar un ejercicio
-//        public void crearObjeto() throws SQLException {
-//            Scanner scanner = new Scanner(System.in);
-//            System.out.print("Ingrese el nombre del ejercicio: ");
-//            String nombre = scanner.nextLine();
-//            System.out.print("Ingrese las calorías quemadas: ");
-//            int caloriasQuemadas = scanner.nextInt();
-//            System.out.print("Ingrese la duración en minutos: ");
-//            int duracion = scanner.nextInt();
-//            scanner.nextLine(); // Consumir el salto de línea
-//            System.out.print("Ingrese el tipo de ejercicio (ej: cardio, fuerza): ");
-//            String tipo = scanner.nextLine();
-//
-//            // Crear objeto Ejercicio
-//            Ejercicio ejercicio = new Ejercicio(nombre, caloriasQuemadas, String.valueOf(duracion), tipo);
-//
-//            // Insertar ejercicio en la base de datos
-//            try (Connection conn = conexion.Obtenerconexion();
-//                 PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Ejercicio (nombre, calorias_quemadas, duracion, tipo) VALUES (?, ?, ?, ?)")) {
-//
-//                pstmt.setString(1, ejercicio.getNombre());
-//                pstmt.setInt(2, ejercicio.getCaloriasQuemadas());
-//                pstmt.setInt(3, Integer.parseInt(ejercicio.getDuracion()));
-//                pstmt.setString(4, ejercicio.getTipo());
-//
-//                int rowCount = pstmt.executeUpdate();
-//                System.out.println("Filas afectadas: " + rowCount);
-//                System.out.println("Registro de ejercicio creado correctamente");
-//
-//            } catch (SQLException e) {
-//                System.out.println("Error: " + e.getMessage());
-//            }
-//        }
-
         public void InsertarEjercicios() throws SQLException {
             try (Connection conn = conexion.Obtenerconexion()) {
 
@@ -104,53 +77,55 @@ public class Ejercicio {
 
                 String insertSql = "INSERT INTO Ejercicios (nombre, calorias_quemadas, tipo) VALUES (?, ?, ?)";
                 try (PreparedStatement pstmt = conn.prepareStatement(insertSql)) {
+                    //Tener en cuenta que son calorias quemadas por minuto, importante ese detalle.
+
                     pstmt.setString(1, "Correr");
-                    pstmt.setInt(2, 300);
+                    pstmt.setInt(2, 10);
                     pstmt.setString(3, "Cardio");
                     pstmt.executeUpdate();
 
                     pstmt.setString(1, "Sentadillas");
-                    pstmt.setInt(2, 150);
+                    pstmt.setInt(2, 8);
                     pstmt.setString(3, "Fuerza");
                     pstmt.executeUpdate();
 
                     pstmt.setString(1, "Zumba");
-                    pstmt.setInt(2, 200);
+                    pstmt.setInt(2, 7);
                     pstmt.setString(3, "Aeróbico");
                     pstmt.executeUpdate();
 
                     pstmt.setString(1, "Natación");
-                    pstmt.setInt(2, 400);
+                    pstmt.setInt(2, 12);
                     pstmt.setString(3, "Cardio");
                     pstmt.executeUpdate();
 
                     pstmt.setString(1, "Plancha");
-                    pstmt.setInt(2, 100);
+                    pstmt.setInt(2, 5);
                     pstmt.setString(3, "Fuerza");
                     pstmt.executeUpdate();
 
                     pstmt.setString(1, "Bicicleta");
-                    pstmt.setInt(2, 250);
+                    pstmt.setInt(2, 9);
                     pstmt.setString(3, "Cardio");
                     pstmt.executeUpdate();
 
                     pstmt.setString(1, "Pesas");
-                    pstmt.setInt(2, 200);
+                    pstmt.setInt(2, 6);
                     pstmt.setString(3, "Fuerza");
                     pstmt.executeUpdate();
 
                     pstmt.setString(1, "Aeróbicos");
-                    pstmt.setInt(2, 180);
+                    pstmt.setInt(2, 7);
                     pstmt.setString(3, "Aeróbico");
                     pstmt.executeUpdate();
 
                     pstmt.setString(1, "Yoga");
-                    pstmt.setInt(2, 70);
+                    pstmt.setInt(2, 3);
                     pstmt.setString(3, "Flexibilidad");
                     pstmt.executeUpdate();
 
                     pstmt.setString(1, "Burpees");
-                    pstmt.setInt(2, 300);
+                    pstmt.setInt(2, 15);
                     pstmt.setString(3, "Cardio");
                     pstmt.executeUpdate();
 
@@ -180,7 +155,7 @@ public class Ejercicio {
                 int caloriasQuemadas = rs.getInt("calorias_quemadas");
                 String tipo = rs.getString("tipo");
 
-                Ejercicio ejercicio = new Ejercicio(id, nombre, caloriasQuemadas, tipo);
+                Ejercicio ejercicio = new Ejercicio(id, nombre, caloriasQuemadas, tipo, 0);
                 listaEjercicios.add(ejercicio);
             }
 
@@ -193,6 +168,6 @@ public class Ejercicio {
 
     @Override
     public String toString() {
-        return id + " - " + nombre + " - " + caloriasQuemadas + " - " + tipo;
+        return id + " - " + nombre + " - " + caloriasQuemadas + " kcal x min - " + tipo;
     }
 }

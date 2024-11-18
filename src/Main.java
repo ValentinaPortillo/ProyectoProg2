@@ -146,103 +146,71 @@ public class Main {
                         break;
 
                     case 6:
-                        System.out.println("Seleccionaste 'Ejercicios'");
+
                          boolean ejercicioTrue = true;
                          while (ejercicioTrue) {
-                             System.out.println("=== Menú Ejercicios ===");
+                             System.out.println("\n=== Menú Ejercicios ===");
                              System.out.println("1. Registrar un nuevo ejercicio realizado");
                              System.out.println("2. Ver ejercicios registrados por usuario");
                              System.out.println("3. Calcular total de calorías quemadas");
                              System.out.println("0. Salir del menú de ejercicios");
-                             System.out.print("Seleccione una opción: ");
 
-                             String respuestaEjercicio = scanner.nextLine();
+                             String respuestaEjercicio = Validaciones.pedirDato(scanner, "Seleccione una opción: ",
+                                     "^[0-3]$", "Error: Las opciones validas solo son del 0 al 3 inclusive.");
                              switch (respuestaEjercicio) {
                                  case "1":
-                                     System.out.println("=== Registrar nuevo ejericio realizado ===");
-                                     System.out.println("Ingrese su username: ");
-                                     String username6 = scanner.nextLine();
+                                     System.out.println("\n=== Registrar nuevo ejericio realizado ===");
+                                     String username6 = Validaciones.pedirDato(scanner, "\nIngrese su username: ",
+                                             "^[a-zA-Z0-9_]{3,50}$", "Error: El username debe contener solo letras, números, guiones bajos y entre 3 y 50 caracteres.");
+
                                      Persona persona6 = Persona.buscarPorUsername(username6);
+                                     if(persona6 == null){break;}
+                                     System.out.println("\nSeleccione un ID de ejercicio");
                                      List<Ejercicio> ejercicios = Ejercicio.obtenerEjercicios();
                                      for (Ejercicio ejercicio1 : ejercicios) {
                                          System.out.println(ejercicio1.toString());
                                      }
-                                     int ejercicio_seleccionado = scanner.nextInt();
-                                     System.out.println("Ingrese la duración del ejericio: ");
-                                     int duracion = scanner.nextInt();
-                                     EjercicioxPersona.insertarEjercicioPersona(ejercicio_seleccionado, persona6.getId(), duracion);
+                                     int ejercicio_seleccionado = Validaciones.validarID(scanner, "");
+
+                                     String duracion = Validaciones.pedirDato(scanner, "Ingrese la duración del ejericio: ",
+                                             "^(?:[1-9]|[1-9][0-9]|[1-2][0-9]{2}|300)$", "Error: La duración debe ser un numero entre 1 y 300 minutos");
+
+                                     EjercicioxPersona.insertarEjercicioPersona(ejercicio_seleccionado, persona6.getId(), Integer.parseInt(duracion));
                                      System.out.println("Ejercicio cargado correctamente\n");
 
                                      break;
                                  case "2":
+                                     String username7 = Validaciones.pedirDato(scanner, "\nIngrese su username: ",
+                                             "^[a-zA-Z0-9_]{3,50}$", "Error: El username debe contener solo letras, números, guiones bajos y entre 3 y 50 caracteres.");
+                                     Persona persona7 = Persona.buscarPorUsername(username7);
+                                     if(persona7 == null){break;}
+                                     List<Ejercicio> ejerciciosxpersona = EjercicioxPersona
+                                             .obtenerEjercicioPorPersona(persona7.getId());
+                                     if (ejerciciosxpersona.isEmpty()) {
+                                         System.out.println("El usuario " + persona7.getUsername() + " no tiene ejercicios registrados");
+                                         break;
+                                     }
+                                     System.out.println("\nTus ejercicios registrados son: ");
+                                     for (Ejercicio ejerxpers : ejerciciosxpersona) {
+                                         System.out.println(ejerxpers.getNombre() + " - " + ejerxpers.getDuracion() + " minutos");
+                                     }
+                                     System.out.println();
+                                     break;
+
+                                 case "3":
+                                     String username8 = Validaciones.pedirDato(scanner, "\nIngrese su username: ",
+                                             "^[a-zA-Z0-9_]{3,50}$", "Error: El username debe contener solo letras, números, guiones bajos y entre 3 y 50 caracteres.");
+                                     Persona persona8 = Persona.buscarPorUsername(username8);
+                                     if(persona8 == null){break;}
+                                     int calorias_quemadas = EjercicioxPersona.calcularCaloriasTotales(persona8.getId());
+                                     System.out.println("\nLas calorias quemadas con tus ejercicios realizados son: " + calorias_quemadas + " kcal\n");
                                      break;
                                  case "0":
                                      ejercicioTrue = false;
+
                              }
                          }
 
-                        // String respuestaEjercicio = scanner.nextLine();
-
-                        // switch (respuestaEjercicio) {
-                        // case "1":
-                        // // Registrar un nuevo ejercicio
-                        // System.out.println("Ingrese el ID del ejercicio realizado:");
-                        // int ejercicioId = scanner.nextInt();
-                        // System.out.println("Ingrese el ID del usuario que realizó el ejercicio:");
-                        // int usuarioId = scanner.nextInt();
-                        // scanner.nextLine(); // Limpiar el buffer
-                        // EjercicioxPersona.insertarEjercicioPersona(ejercicioId, usuarioId); // Método
-                        // para
-                        // // registrar
-                        // // ejercicio
-                        // System.out.println("Ejercicio registrado correctamente.");
-                        // break;
-
-                        // case "2":
-                        // // Ver ejercicios de un usuario
-                        // System.out.print("Ingrese su username para ver los ejercicios: ");
-                        // String usernameEjercicio = scanner.nextLine();
-                        // Persona personaEjercicio = Persona.buscarPorUsername(usernameEjercicio);
-                        // if (personaEjercicio != null) {
-                        // List<Ejercicio> ejerciciosUsuario = EjercicioxPersona
-                        // .obtenerEjercicioPorPersona(personaEjercicio.getId());
-                        // if (ejerciciosUsuario.isEmpty()) {
-                        // System.out.println("No hay ejercicios registrados para este usuario.");
-                        // } else {
-                        // System.out.println("Ejercicios registrados para el usuario "
-                        // + usernameEjercicio + ":");
-                        // for (Ejercicio ejercicio1 : ejerciciosUsuario) {
-                        // System.out.println(ejercicio1.toString());
-                        // }
-                        // }
-                        // } else {
-                        // System.out.println("Usuario no encontrado.");
-                        // }
-                        // break;
-
-                        // case "3":
-                        // // Calcular calorías quemadas por un usuario
-                        // System.out.print("Ingrese su username para calcular calorías quemadas: ");
-                        // String usernameCalorias = scanner.nextLine();
-                        // Persona personaCalorias = Persona.buscarPorUsername(usernameCalorias);
-                        // if (personaCalorias != null) {
-                        // int caloriasTotales = EjercicioxPersona
-                        // .calcularCaloriasTotales(personaCalorias.getId());
-                        // System.out.println("Total de calorías quemadas: " + caloriasTotales);
-                        // } else {
-                        // System.out.println("Usuario no encontrado.");
-                        // }
-                        // break;
-
-                        // case "0":
-                        // // Salir del submenú de ejercicios
-                        // ejercicioTrue = false;
-                        // break;
-
-                        // default:
-                        // System.out.println("Opción no válida. Por favor intente nuevamente.");
-                        // }
-                        // }
                         break;
 
                     case 0:

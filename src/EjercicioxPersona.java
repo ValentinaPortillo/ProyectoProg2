@@ -28,51 +28,6 @@ public class EjercicioxPersona {
             }
         }
 
-
-
-        // Método para obtener los ejercicios realizados por una persona
-        public List<Ejercicio> obtenerEjercicioPorPersona(int personaId) {
-            List<Ejercicio> ejercicios = new ArrayList<>();
-
-            String sql = "SELECT j.id_ejercicio, j.nombre, j.calorias_quemadas, j.tipo "
-                       + "FROM EjercicioxPersona jp "
-                       + "JOIN Ejercicio j ON jp.ejercicio_id = j.id_ejercicio "
-                       + "WHERE jp.persona_id = ?";
-
-            try (Connection conn = conexion.Obtenerconexion();
-                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-                pstmt.setInt(1, personaId);
-                ResultSet rs = pstmt.executeQuery();
-
-                while (rs.next()) {
-                    int id = rs.getInt("id");
-                    String nombre = rs.getString("nombre");
-                    int caloriasQuemadas = rs.getInt("calorias_quemadas");
-                    String tipo = rs.getString("tipo");
-
-                    Ejercicio ejercicio = new Ejercicio(id, nombre, caloriasQuemadas, tipo);
-                    ejercicios.add(ejercicio);
-                }
-
-            } catch (SQLException e) {
-                System.out.println("Error al obtener los ejercicios: " + e.getMessage());
-            }
-
-            return ejercicios;
-        }
-
-        // Método para calcular el total de calorías quemadas por una persona
-        public int calcularCaloriasTotales(int personaId) {
-            int totalCalorias = 0;
-            List<Ejercicio> ejercicios = obtenerEjercicioPorPersona(personaId);
-
-            for (Ejercicio ejercicio : ejercicios) {
-                totalCalorias += ejercicio.getCaloriasQuemadas();
-            }
-
-            return totalCalorias;
-        }
     }
 
     // Método para insertar un ejercicio realizado por una persona
@@ -92,5 +47,50 @@ public class EjercicioxPersona {
         } catch (SQLException e) {
             System.out.println("Error al insertar en EjercicioxPersona: " + e.getMessage());
         }
+    }
+
+    // Método para obtener los ejercicios realizados por una persona
+    public static List<Ejercicio> obtenerEjercicioPorPersona(int personaId) {
+        List<Ejercicio> ejercicios = new ArrayList<>();
+
+        String sql = "SELECT j.id_ejercicio, j.nombre, j.calorias_quemadas, j.tipo, jp.duracion "
+                + "FROM EjercicioxPersona jp "
+                + "JOIN Ejercicios j ON jp.id_ejercicio = j.id_ejercicio "
+                + "WHERE jp.persona_id = ?";
+
+        try (Connection conn = conexion.Obtenerconexion();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, personaId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id_ejercicio");
+                String nombre = rs.getString("nombre");
+                int caloriasQuemadas = rs.getInt("calorias_quemadas");
+                String tipo = rs.getString("tipo");
+                int duracion = rs.getInt("duracion");
+
+                Ejercicio ejercicio = new Ejercicio(id, nombre, caloriasQuemadas, tipo, duracion);
+                ejercicios.add(ejercicio);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener los ejercicios: " + e.getMessage());
+        }
+
+        return ejercicios;
+    }
+
+    // Método para calcular el total de calorías quemadas por una persona
+    public static int calcularCaloriasTotales(int personaId) {
+        int totalCalorias = 0;
+        List<Ejercicio> ejercicios = obtenerEjercicioPorPersona(personaId);
+
+        for (Ejercicio ejercicio : ejercicios) {
+            totalCalorias += ejercicio.getCaloriasQuemadas() * ejercicio.getDuracion();
+        }
+
+        return totalCalorias;
     }
 }
